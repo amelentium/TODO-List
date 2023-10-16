@@ -1,0 +1,39 @@
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #FFFFFA;
+}
+
+h1 {
+  font-size: x-large;
+  margin: 12px 0px;
+}
+
+.container {
+  border: 1px solid darkgray;
+  border-radius: 5px;
+}
+
+.container_header {
+  border-bottom: inherit;
+  text-align: center;
+}
+
+.container_body {
+  display: flex;
+}
+
+.group {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid darkgray;
+}
+
+.group:last-child {
+ border: none;
+}
+
+.group_header {
+  border-bottom: 1px solid darkgray;
+  text-align: center;
+  padding: 8px;
+}
