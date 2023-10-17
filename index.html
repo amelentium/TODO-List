@@ -10,10 +10,16 @@
   <body>
     <div class="container">
       <div class="container_header">
-        <h1>TO DO List</h1>
+        <span class="header_content">
+          TO DO List
+        </span>
+        <span class="add_button"
+              onclick="createItem()">
+          ✚
+        </span>
       </div>
       <div class="container_body">
-        <div id="canceled_container"
+        <div id="canceled_group"
              class="group">
           <div class="group_header">
             Canceled
@@ -22,7 +28,7 @@
 
           </div>
         </div>
-        <div id="planned_container"
+        <div id="planned_group"
              class="group">
           <div class="group_header">
             Planned
@@ -31,7 +37,7 @@
 
           </div>
         </div>
-        <div id="progress_container"
+        <div id="progress_group"
              class="group">
           <div class="group_header">
             In Progress
@@ -40,7 +46,7 @@
 
           </div>
         </div>
-        <div id="completed_container"
+        <div id="completed_group"
              class="group">
           <div class="group_header">
             Completed
