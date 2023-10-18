@@ -49,13 +49,12 @@ function closeDialog() {
 function saveItemChanges() {
   if (isNewItem) {
     items.push(item);
-    refreshTODOList();
-  } else {
-    item.name = editNameElement.value;
-    item.description = editDescriptionElement.value;
-    item.priority = Number(editPriorityElement.value);
-    item.status = Number(editStatusElement.value);
-
-    refreshTODOList();
   }
+  
+  item.name = editNameElement.value;
+  item.description = editDescriptionElement.value;
+  item.priority = Number(editPriorityElement.value);
+  item.status = Number(editStatusElement.value);
+
+  refreshTODOList();
 }

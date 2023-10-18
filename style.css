@@ -1,53 +1,55 @@
+:root {
+  --border: 1px solid #575757;
+  --border-radius: 4px;
+}
+
 body {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   background-color: #FFFFFA;
   color: #2B2B2B;
 }
-.container {
-  height: 98vh;
-  border: 1px solid #575757;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-}
 
-.container_header {
+.header {
   display: flex;
   align-items: center;
-  border-bottom: inherit;
-  text-align: center;
-  font-size: x-large;
+  border-bottom: var(--border);
+
+  > * {
+    border-left: var(--border);
+  }
+  
+  > *:first-child {
+    border-left: none;
+  }
+  
+  > .content {
+    flex: 1;
+    padding: 4px 0px;
+  }
 }
 
-.container_body {
+.container {
+  height: 98vh;
+  border: var(--border);
+  border-radius: var(--border-radius);
   display: flex;
-  height: 100%;
-  min-height: 0px;
+  flex-direction: column;
+
+  > .header {
+    text-align: center;
+    font-size: x-large;    
+  }
+
+  > .body {
+    display: flex;
+    height: 100%;
+    min-height: 0px;
+  }
 }
 
-.header_content {
-  flex: 1;
-  padding: 4px 0px;
-}
-
-.add_button {
+.button {
   flex: 0;
   padding: 4px 8px;
-  border-left: 1px solid #5c5c5c;
-  cursor: pointer;
-}
-
-.cancel_button {
-  flex: 0;
-  padding: 4px 8px;
-  border-right: 1px solid #575757;
-  cursor: pointer;
-}
-
-.complete_button {
-  flex: 0;
-  padding: 4px 8px;
-  border-left: 1px solid #575757;
   cursor: pointer;
 }
 
@@ -55,42 +57,37 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #575757;
+  border-right: var(--border);
+
+  > .header {
+    flex: 0;
+    flex-direction: column;
+    font-weight: bold;
+  }
+
+  > .body {
+    flex: 1;
+    overflow-y: auto;
+  }
 }
 
 .group:last-child {
  border: none;
 }
 
-.group_header {
-  flex: 0;
-  display: flex;
-  border-bottom: 1px solid #575757;
-  text-align: center;
-  font-weight: bold;
-}
-
-.group_body {
-  flex: 1;
-  overflow-y: auto;
-}
-
 .item {
   text-align: center;
-  border: 1px solid #575757;
-  border-radius: 4px;
-  margin: 4px 8px;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  margin: 8px;
 
-  .header {
-    display: flex;
-    text-align: center;
+  > .header {
     font-size: x-small;
     font-weight: bold;
     color: #575757;
-    border-bottom:inherit;
   }
 
-  .body {
+  > .body {
     .name {
       margin-top: 4px;
     }
@@ -105,22 +102,16 @@ body {
 
 .dragger {
   cursor: grab;
-}
 
-.dragger:active {
-  cursor: grabbing;
+  &:active {
+    cursor: grabbing;
+  }
 }
 
 #edit_dialog {  
   background-color: #FAFAFA;
-  border: 1px solid #575757;
-  border-radius: 4px;
-
-  .header {
-    display: flex;
-    border-bottom: 1px solid #575757;
-    text-align: center;
-  }
+  border: var(--border);
+  border-radius: var(--border-radius);
 
   &::backdrop {
     background-color: #2B2B2B;

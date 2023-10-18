@@ -35,7 +35,7 @@ export function refreshTODOList() {
 
 function redrawTODOList() {
   Object.values(Status).forEach(status => {
-    const groupBody = itemGroupElements[status].querySelector('.group_body');
+    const groupBody = itemGroupElements[status].querySelector('.body');
     const groupItems = items.filter(item => item.status === status);
 
     groupBody.innerHTML = '';    
@@ -58,12 +58,12 @@ function createItemElement(item) {
                      || item.status ==   Status.Completed;
 
   const cancelButton = `
-    <span class="cancel_button">
+    <span class="button cancel_button">
       ✗
     </span>`
 
   const completeButton =`
-    <span class="complete_button">
+    <span class="button complete_button">
       ✓
     </span>`
 
@@ -71,7 +71,7 @@ function createItemElement(item) {
   <div id=${item.id} class="item draggable">
     <div class="header">
       ${!itemResolved ? cancelButton : ''}
-      <span class="header_content dragger">
+      <span class="content dragger">
         •••
       </span>
       ${!itemResolved ? completeButton : ''}
@@ -96,10 +96,10 @@ function createItemElement(item) {
   });
 
   if (!itemResolved) {
-    const cancelButton = itemElement.querySelector('.cancel_button');
+    const cancelButton = itemElement.getElementsByClassName('cancel_button')[0];
     cancelButton.addEventListener('click', cancelItem);
 
-    const completeButton = itemElement.querySelector('.complete_button');
+    const completeButton = itemElement.getElementsByClassName('complete_button')[0];
     completeButton.addEventListener('click', completeItem);
   }
 
@@ -112,8 +112,7 @@ function cancelItem(e) {
   const itemOldStatus = item.status;
 
   item.status = Status.Canceled;
-  redrawTODOListStatusGroup(itemOldStatus);
-  redrawTODOListStatusGroup(item.status);
+  redrawTODOList();
 }
 
 function completeItem(e) {
@@ -122,8 +121,7 @@ function completeItem(e) {
   const itemOldStatus = item.status;
 
   item.status = Status.Completed;
-  redrawTODOListStatusGroup(itemOldStatus);
-  redrawTODOListStatusGroup(item.status);
+  redrawTODOList();
 }
 
 export function findItemById(id) {
