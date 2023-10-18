@@ -110,3 +110,20 @@ body {
 .dragger:active {
   cursor: grabbing;
 }
+
+#edit_dialog {  
+  background-color: #FAFAFA;
+  border: 1px solid #575757;
+  border-radius: 4px;
+
+  .header {
+    display: flex;
+    border-bottom: 1px solid #575757;
+    text-align: center;
+  }
+
+  &::backdrop {
+    background-color: #2B2B2B;
+    opacity: .75;
+  }
+}

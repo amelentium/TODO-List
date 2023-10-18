@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TO DO List</title>
     <link href="style.css" rel="stylesheet"/>
-    <script defer src="main.js"></script>
+    <script defer type="module" src="./scripts/main.js"></script>
   </head>
   <body>
     <div class="container">
@@ -13,8 +13,8 @@
         <span class="header_content">
           To Do List
         </span>
-        <span class="add_button"
-              onclick="createItem()">
+        <span id="add_button" 
+              class="add_button">
           +
         </span>
       </div>
@@ -65,5 +65,89 @@
         </div>
       </div>
     </div>
+    <dialog id="edit_dialog">
+      <div class="header">
+        <span>
+          Edit Item
+        </span>
+        <span id="discard_button">
+          ✗
+        </span>
+      </div>
+      <div class="body">
+        <div class="property_field">
+          <span>
+            <label for="name">
+              Name:
+            </label>
+          </span>
+          <span>
+            <input id="name"
+                   type="text"
+                   size="20"/>
+          </span>
+        </div>
+        <div class="property_field">
+          <span>
+            <label for="description">
+              Description:
+            </label>
+          </span>
+          <span>
+            <input id="description"
+                   type="text"
+                   size="20"/>
+          </span>
+        </div>
+        <div class="property_field">
+          <span>
+            <label for="priority">
+              Priority:
+            </label>
+          </span>
+          <span>
+            <select id="priority">
+              <option value="0">
+                Minor
+              </option>
+              <option value="1" selected>
+                Normal
+              </option>
+              <option value="2">
+                Major
+              </option>
+            </select>
+          </span>
+        </div>
+        <div class="property_field">
+          <span>
+            <label for="status">
+              Status:
+            </label>
+          </span>
+          <span>
+            <select id="status">
+              <option value="0" selected>
+                Planned
+              </option>
+              <option value="1">
+                InProgress
+              </option>
+              <option value="2">
+                Completed
+              </option>
+              <option value="3">
+                Canceled
+              </option>
+            </select>
+          </span>
+        </div>
+        <div>
+          <span id="save_button">
+            ✓
+          </span>
+        </div>
+      </div>
+    </dialog>
   </body>
 </html>
