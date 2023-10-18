@@ -16,30 +16,30 @@ class ToDoItem {
   }
 }
 
-const Priority = {
+const Priority = Object.freeze({
 	Minor: 0,
 	Normal: 1,
 	Major: 2,
-};
+});
 
 const Status = Object.freeze({
 	Planned: 0,
 	InProgress: 1,
-	Compconsted: 2,
+	Completed: 2,
 	Canceled: 3,
 });
 
-const StatusGroupId = {
+const StatusGroupId = Object.freeze({
   0: 'planned_group',
   1: 'progress_group',
   2: 'completed_group',
   3: 'canceled_group',
-};
+});
 
 const items = [];
 const itemGroupElements = {};
 
-let itemElement, dragOffsetY, dragOffsetX;
+let draggableElement, dragOffsetY, dragOffsetX;
 
 Object.keys(StatusGroupId).forEach(status => {
   const groupId = StatusGroupId[status];
@@ -75,20 +75,7 @@ function redrawTODOListStatusGroup(status) {
   groupBody.innerHTML = ''
   groupItems = items.filter(item => item.status == status)
   groupItems.forEach(item => {
-    groupBody.innerHTML += `
-      <div id=${item.id} class="item">
-        <div class="header draggable"
-             onmousedown="itemDragDown(event)">
-          •••
-        </div>
-        <div class="name">
-          ${item.name}
-        </div>
-        <div class="description">
-          ${item.description}
-        </div>
-      </div>
-    `
+    groupBody.innerHTML += createItemElementHTML(item);
   });
 }
 
@@ -102,20 +89,81 @@ function createItem() {
   redrawTODOListStatusGroup(Status.Planned);
 }
 
+function createItemElementHTML(item) {
+  const itemResolved = item.status == Status.Canceled
+                     || item.status ==   Status.Completed;
+  const cancelButton = `
+    <span class="cancel_button"
+          onclick="cancelItem(event)">
+      ✗
+    </span>`
+  const completeButton =`
+    <span class="complete_button"
+          onclick="completeItem(event)">
+      ✓
+    </span>`
+
+  return `
+  <div id=${item.id} class="item draggable">
+    <div class="header">
+      ${!itemResolved ? cancelButton : ''}
+      <span class="header_content dragger"
+            onmousedown="itemDragDown(event)">
+        •••
+      </span>
+      ${!itemResolved ? completeButton : ''}
+    </div>
+    <div class="body">
+      <div class="name">
+        ${item.name}
+      </div>
+      <div class="description">
+        ${item.description}
+      </div>
+    </div>
+  </div>
+  `
+}
+
+function cancelItem(e) {
+  const itemElement = e.target.closest('.item');
+  const item = findItemById(itemElement.id);
+  const itemOldStatus = item.status;
+
+  item.status = Status.Canceled;
+  redrawTODOListStatusGroup(itemOldStatus);
+  redrawTODOListStatusGroup(item.status);
+}
+
+function completeItem(e) {
+  const itemElement = e.target.closest('.item');
+  const item = findItemById(itemElement.id);
+  const itemOldStatus = item.status;
+
+  item.status = Status.Completed;
+  redrawTODOListStatusGroup(itemOldStatus);
+  redrawTODOListStatusGroup(item.status);
+}
+
+function findItemById(id) {
+    const item = items.find(item => item.id == id);
+    return item
+}
+
 function itemDragDown(e) {
   e.preventDefault();
 
-  itemElement = e.target.parentElement;
+  draggableElement = e.target.closest('.draggable');
 
-  const elementRect = itemElement.getBoundingClientRect();
+  const elementRect = draggableElement.getBoundingClientRect();
   const elementWidth = Math.floor(elementRect.width);
   dragOffsetX = e.clientX - elementRect.x;
   dragOffsetY = e.clientY - elementRect.y;
 
-  itemElement.style.position = 'absolute';
-  itemElement.style.width = elementWidth + 'px';
-  itemElement.style.top = e.clientY - dragOffsetY + 'px';
-  itemElement.style.left = e.clientX - dragOffsetX + 'px';
+  draggableElement.style.position = 'absolute';
+  draggableElement.style.width = elementWidth + 'px';
+  draggableElement.style.top = e.clientY - dragOffsetY + 'px';
+  draggableElement.style.left = e.clientX - dragOffsetX + 'px';
 
   document.onmouseup = itemDragUp;
   document.onmousemove = itemDragMove;
@@ -124,15 +172,14 @@ function itemDragDown(e) {
 function itemDragMove(e) {
   e.preventDefault();
   
-  itemElement.style.top = e.clientY - dragOffsetY + 'px';
-  itemElement.style.left = e.clientX - dragOffsetX + 'px';
+  draggableElement.style.top = e.clientY - dragOffsetY + 'px';
+  draggableElement.style.left = e.clientX - dragOffsetX + 'px';
 }
 
 function itemDragUp(e) {
-  itemElement.style = null;
+  draggableElement.style = null;
   
-  const itemId = itemElement.id;
-  const item = items.find(item => item.id == itemId);
+  const item = findItemById(draggableElement.id);
   const itemOldStatus = item.status;
   
   item.status = findNewItemStatusByGroupLeftOffset(e.clientX);
