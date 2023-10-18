@@ -1,5 +1,5 @@
 import { ToDoItem } from "./classes.js";
-import { findItemById, addNewItem, refreshTODOList } from "./main.js";
+import { items, findItemById, refreshTODOList } from "./main.js";
 
 const editDialog = document.getElementById('edit_dialog');
 const editNameElement = editDialog.querySelector('#name');
@@ -21,9 +21,7 @@ saveChangesButton.addEventListener('click', () => {
   closeDialog();
 })
 
-discardChangesButton.addEventListener('click', () => {
-  closeDialog();
-});
+discardChangesButton.addEventListener('click', closeDialog);
 
 export function openDialog(itemId) {
   isNewItem = itemId == null;
@@ -33,8 +31,8 @@ export function openDialog(itemId) {
 
   editNameElement.value = item.name;
   editDescriptionElement.value = item.description;
-  editPriorityElement.value = item.priority;
-  editStatusElement.value = item.status;
+  editPriorityElement.value = Number(item.priority);
+  editStatusElement.value = Number(item.status);
 
   editDialog.showModal();
 }
@@ -50,12 +48,13 @@ function closeDialog() {
 
 function saveItemChanges() {
   if (isNewItem) {
-    addNewItem(item);
+    items.push(item);
+    refreshTODOList();
   } else {
     item.name = editNameElement.value;
     item.description = editDescriptionElement.value;
-    item.priority = editPriorityElement.value;
-    item.status = editStatusElement.value;
+    item.priority = Number(editPriorityElement.value);
+    item.status = Number(editStatusElement.value);
 
     refreshTODOList();
   }

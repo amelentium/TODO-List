@@ -1,6 +1,9 @@
+import { StatusGroupId } from "./classes.js";
+import { itemGroupElements, refreshTODOList, findItemById } from "./main.js";
+
 let draggableElement, dragOffsetY, dragOffsetX;
 
-function itemDragDown(e) {
+export function itemDragDown(e) {
   draggableElement = e.target.closest('.draggable');
 
   const elementRect = draggableElement.getBoundingClientRect();
@@ -30,8 +33,7 @@ function itemDragUp(e) {
   
   item.status = findNewItemStatusByGroupLeftOffset(e.clientX);
   if (itemOldStatus !== item.status) {
-    redrawTODOListStatusGroup(itemOldStatus);
-    redrawTODOListStatusGroup(item.status);
+    refreshTODOList();
   }
 
   document.onmouseup = null;
@@ -58,5 +60,5 @@ function findNewItemStatusByGroupLeftOffset(leftOffset) {
     else break;
   }
 
-  return status;
+  return Number(status);
 }

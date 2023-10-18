@@ -1,9 +1,10 @@
-import { ToDoItem, Status, StatusGroupId, Priority } from "./classes.js";
+import { Status, StatusGroupId } from "./classes.js";
 import { openDialog } from "./dialog.js";
-import "./drag.js";
+import { itemDragDown } from "./drag.js";
 
-const items = [];
-const itemGroupElements = {};
+export let items = [];
+export const itemGroupElements = {};
+const itemsLocalStorageKey = 'toDoList';
 
 Object.keys(StatusGroupId).forEach(status => {
   const groupId = StatusGroupId[status];
@@ -11,50 +12,45 @@ Object.keys(StatusGroupId).forEach(status => {
   itemGroupElements[status] = itemGroup;
 });
 
-seed();
-redrawTODOList();
+init();
 
-function seed() {
-  for(let i = 1; i < 13; i++) {
-    const item = new ToDoItem(
-      `Item ${i}`,
-      `Description for item ${i}`,
-      i % 3
-    );
+function init() {
+  loadItems();
+  redrawTODOList();
+}
 
-    item.status = i % 4;
+function loadItems() {
+  items = JSON.parse(localStorage.getItem(itemsLocalStorageKey));
+}
 
-    items.push(item);
-  }
+function saveItems() {
+  localStorage.setItem(itemsLocalStorageKey, JSON.stringify(items));
+}
+
+export function refreshTODOList() {
+  sortItems();
+  saveItems();
+  redrawTODOList();
 }
 
 function redrawTODOList() {
   Object.values(Status).forEach(status => {
-    redrawTODOListStatusGroup(status);
+    const groupBody = itemGroupElements[status].querySelector('.group_body');
+    const groupItems = items.filter(item => item.status === status);
+
+    groupBody.innerHTML = '';    
+    groupItems.forEach(item => {
+      groupBody.appendChild(createItemElement(item));
+    });
   });
 }
 
-function redrawTODOListStatusGroup(status) {
-  const groupBody = itemGroupElements[status].querySelector('.group_body');
-  groupBody.innerHTML = '';
-  const groupItems = items.filter(item => item.status == status);
-  groupItems.forEach(item => {
-    groupBody.appendChild(createItemElement(item));
-  });
-}
-
-export function addNewItem(item) {
-  items.push(item);
-  refreshTODOList();
-}
-
-export function refreshTODOList() {
-  resortItems();
-  redrawTODOList();  
-}
-
-function resortItems() {
-
+function sortItems() {
+  items.sort((a, b) => 
+    a.priority !== b.priority
+    ? b.priority - a.priority
+    : b.createdAt - a.createdAt
+  );
 }
 
 function createItemElement(item) {
@@ -62,14 +58,12 @@ function createItemElement(item) {
                      || item.status ==   Status.Completed;
 
   const cancelButton = `
-    <span class="cancel_button"
-          onclick="cancelItem(event)">
+    <span class="cancel_button">
       ✗
     </span>`
 
   const completeButton =`
-    <span class="complete_button"
-          onclick="completeItem(event)">
+    <span class="complete_button">
       ✓
     </span>`
 
@@ -77,8 +71,7 @@ function createItemElement(item) {
   <div id=${item.id} class="item draggable">
     <div class="header">
       ${!itemResolved ? cancelButton : ''}
-      <span class="header_content dragger"
-            onmousedown="itemDragDown(event)">
+      <span class="header_content dragger">
         •••
       </span>
       ${!itemResolved ? completeButton : ''}
@@ -94,8 +87,21 @@ function createItemElement(item) {
   </div>
   `, 'text/html').body.firstChild;
 
+  const itemDragger = itemElement.querySelector('.dragger');
+  itemDragger.addEventListener('mousedown', itemDragDown);
+
   const itemElementBody = itemElement.querySelector('.body');
-  itemElementBody.addEventListener('click', () => openDialog(item.id));
+  itemElementBody.addEventListener('click', () => {
+    openDialog(item.id);
+  });
+
+  if (!itemResolved) {
+    const cancelButton = itemElement.querySelector('.cancel_button');
+    cancelButton.addEventListener('click', cancelItem);
+
+    const completeButton = itemElement.querySelector('.complete_button');
+    completeButton.addEventListener('click', completeItem);
+  }
 
   return itemElement;
 }
@@ -122,5 +128,5 @@ function completeItem(e) {
 
 export function findItemById(id) {
     const item = items.find(item => item.id == id);
-    return item
+    return item;
 }
