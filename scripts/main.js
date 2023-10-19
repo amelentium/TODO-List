@@ -1,8 +1,6 @@
-import { Status, StatusGroupId } from "./classes.js";
-import { openDialog } from "./dialog.js";
-import { itemDragDown } from "./drag.js";
-
-export const itemGroupElements = {};
+import { Status, StatusGroupId } from './classes.js';
+import { openDialog } from './dialog.js';
+import { itemDragStart } from './drag.js';
 
 export function refreshTODOList() {
   sortItems();
@@ -26,6 +24,7 @@ export function addItem(item) {
 
 const items = [];
 const itemsLocalStorageKey = 'toDoList';
+const itemGroupElements = {};
 
 Object.keys(StatusGroupId).forEach(status => {
   const groupId = StatusGroupId[status];
@@ -84,11 +83,11 @@ function createItemElement(item) {
 
   const itemElement = new DOMParser().parseFromString(`
   <div id=${item.id}
-       class="item draggable"
+       class="item"
        priority="${item.priority}">
     <div class="header">
       ${!itemResolved ? cancelButton : ''}
-      <span class="content dragger">
+      <span class="content">
         •••
       </span>
       ${!itemResolved ? completeButton : ''}
@@ -104,13 +103,11 @@ function createItemElement(item) {
   </div>
   `, 'text/html').body.firstChild;
 
-  const itemDragger = itemElement.querySelector('.dragger');
-  itemDragger.addEventListener('mousedown', itemDragDown);
+  itemElement.setAttribute('draggable', 'true');
+  itemElement.addEventListener('dragstart', itemDragStart);
 
   const itemElementBody = itemElement.querySelector('.body');
-  itemElementBody.addEventListener('click', () => {
-    openDialog(item.id);
-  });
+  itemElementBody.addEventListener('click', () => { openDialog(item.id); });
 
   if (!itemResolved) {
     const cancelButton = itemElement.getElementsByClassName('cancel_button')[0];

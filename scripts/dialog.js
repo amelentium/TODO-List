@@ -1,5 +1,5 @@
-import { ToDoItem } from "./classes.js";
-import { addItem, findItemById, deleteItemById, refreshTODOList } from "./main.js";
+import { ToDoItem } from './classes.js';
+import { addItem, findItemById, deleteItemById, refreshTODOList } from './main.js';
 
 export function openDialog(itemId) {
   isNewItem = itemId == null;

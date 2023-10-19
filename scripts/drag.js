@@ -1,64 +1,29 @@
-import { StatusGroupId } from "./classes.js";
-import { itemGroupElements, refreshTODOList, findItemById } from "./main.js";
+import { Status, StatusGroupId } from './classes.js';
+import { refreshTODOList, findItemById } from './main.js';
 
-export function itemDragDown(e) {
-  draggableElement = e.target.closest('.draggable');
-
-  const elementRect = draggableElement.getBoundingClientRect();
-  const elementWidth = Math.floor(elementRect.width);
-  dragOffsetX = e.clientX - elementRect.x;
-  dragOffsetY = e.clientY - elementRect.y;
-
-  draggableElement.style.position = 'absolute';
-  draggableElement.style.width = elementWidth + 'px';
-  draggableElement.style.top = e.clientY - dragOffsetY + 'px';
-  draggableElement.style.left = e.clientX - dragOffsetX + 'px';
-
-  document.onmouseup = itemDragUp;
-  document.onmousemove = itemDragMove;
+export function itemDragStart(e) {
+  e.dataTransfer.setData('text/plain', e.target.id);
+  e.dataTransfer.effectAllowed = 'move';
 }
 
-function itemDragMove(e) {
-  draggableElement.style.top = e.clientY - dragOffsetY + 'px';
-  draggableElement.style.left = e.clientX - dragOffsetX + 'px';
+Object.values(Status).forEach(status => {
+  const groupId = StatusGroupId[status];
+  const groupElement = document.getElementById(groupId);
+
+  groupElement.addEventListener('dragover', (event) => itemDragover(event));
+  groupElement.addEventListener('drop', (event) => itemDrop(event, status));
+});
+
+function itemDragover(e) {
+  e.preventDefault();
 }
 
-let draggableElement, dragOffsetY, dragOffsetX;
-
-function itemDragUp(e) {
-  draggableElement.style = null;
+function itemDrop(e, status) {
+  const itemId = e.dataTransfer.getData('text/plain');
+  const item = findItemById(itemId);
   
-  const item = findItemById(draggableElement.id);
-  const itemOldStatus = item.status;
-  
-  item.status = findNewItemStatusByGroupLeftOffset(e.clientX);
-  if (itemOldStatus !== item.status) {
+  if (item.status !== status) {
+    item.status = status;
     refreshTODOList();
   }
-
-  document.onmouseup = null;
-  document.onmousemove = null;
-}
-
-function findNewItemStatusByGroupLeftOffset(leftOffset) {
-  const groupElementLeftOffsets = [];
-
-  Object.keys(StatusGroupId).forEach(status => 
-    groupElementLeftOffsets.push({
-      status: status, 
-      offset: itemGroupElements[status].offsetLeft,
-    })
-  );
-
-  groupElementLeftOffsets.sort((a, b) => a.offset - b.offset);
-
-  let status = groupElementLeftOffsets[0].status;
-
-  for(let i = 1; i < groupElementLeftOffsets.length; i++) {
-    if (groupElementLeftOffsets[i].offset < leftOffset)
-      status = groupElementLeftOffsets[i].status
-    else break;
-  }
-
-  return Number(status);
 }
