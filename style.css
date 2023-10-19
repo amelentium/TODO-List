@@ -5,38 +5,48 @@
 
 body {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  background-color: #FFFFFA;
+  background-color: #cacaca;
   color: #2B2B2B;
+}
+
+.button {
+  cursor: pointer;
 }
 
 .header {
   display: flex;
   align-items: center;
   border-bottom: var(--border);
+  text-align: center;
 
   > * {
-    border-left: var(--border);
+    border-right: var(--border);
   }
   
-  > *:first-child {
-    border-left: none;
+  > *:last-child {
+    border-right: none;
   }
   
   > .content {
     flex: 1;
     padding: 4px 0px;
   }
+
+  .button {
+    flex: 0;
+    padding: 4px 8px;
+  }
 }
 
 .container {
-  height: 98vh;
-  border: var(--border);
-  border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  height: 98vh;
+  background-color: #FFFFFA;
 
   > .header {
-    text-align: center;
     font-size: x-large;    
   }
 
@@ -47,12 +57,6 @@ body {
   }
 }
 
-.button {
-  flex: 0;
-  padding: 4px 8px;
-  cursor: pointer;
-}
-
 .group {
   flex: 1;
   display: flex;
@@ -61,7 +65,6 @@ body {
 
   > .header {
     flex: 0;
-    flex-direction: column;
     font-weight: bold;
   }
 
@@ -94,8 +97,32 @@ body {
   
     .description {
       font-size: smaller;
-      color: gray;   
+      color: rgb(94, 94, 94);   
       margin: 4px 0px; 
+    }
+  }
+
+  &[priority="0"] {
+    background-color: #96B1EB;
+
+    .header {
+      background-color: #6A9AEB;
+    }
+  }
+
+  &[priority="1"] {
+    background-color: #CDEB96;
+
+    .header {
+      background-color: #C7EB6A;
+    }
+  }
+
+  &[priority="2"] {
+    background-color: #EAA496;
+
+    .header {
+      background-color: #EB7A69;
     }
   }
 }
@@ -112,9 +139,40 @@ body {
   background-color: #FAFAFA;
   border: var(--border);
   border-radius: var(--border-radius);
+  padding: 0px;
 
   &::backdrop {
     background-color: #2B2B2B;
     opacity: .75;
+  }
+
+  .body {
+    margin: 0px 16px;
+    display: flex;
+    flex-direction: column;
+    
+    .property_field {
+      margin: 0px;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .property_element {
+      width: 100%;
+      text-align: center;
+      padding: 4px 0px;
+    }
+
+    .button_block {
+      display: flex;
+      justify-content: space-evenly;
+      margin: 8px 0px;
+
+      .button {
+        border: var(--border);
+        border-radius: var(--border-radius);
+        padding: 0px 8px;
+      }
+    }
   }
 }

@@ -2,8 +2,29 @@ import { Status, StatusGroupId } from "./classes.js";
 import { openDialog } from "./dialog.js";
 import { itemDragDown } from "./drag.js";
 
-export let items = [];
 export const itemGroupElements = {};
+
+export function refreshTODOList() {
+  sortItems();
+  saveItems();
+  redrawTODOList();
+}
+
+export function findItemById(id) {
+    const item = items.find(item => item.id == id);
+    return item;
+}
+
+export function deleteItemById(id) {
+  const itemIndex = items.findIndex(item => item.id == id)
+  items.splice(itemIndex, 1);
+}
+
+export function addItem(item) {
+  items.push(item);
+}
+
+const items = [];
 const itemsLocalStorageKey = 'toDoList';
 
 Object.keys(StatusGroupId).forEach(status => {
@@ -20,17 +41,11 @@ function init() {
 }
 
 function loadItems() {
-  items = JSON.parse(localStorage.getItem(itemsLocalStorageKey));
+  items.push(...JSON.parse(localStorage.getItem(itemsLocalStorageKey)));
 }
 
 function saveItems() {
   localStorage.setItem(itemsLocalStorageKey, JSON.stringify(items));
-}
-
-export function refreshTODOList() {
-  sortItems();
-  saveItems();
-  redrawTODOList();
 }
 
 function redrawTODOList() {
@@ -68,7 +83,9 @@ function createItemElement(item) {
     </span>`
 
   const itemElement = new DOMParser().parseFromString(`
-  <div id=${item.id} class="item draggable">
+  <div id=${item.id}
+       class="item draggable"
+       priority="${item.priority}">
     <div class="header">
       ${!itemResolved ? cancelButton : ''}
       <span class="content dragger">
@@ -112,7 +129,7 @@ function cancelItem(e) {
   const itemOldStatus = item.status;
 
   item.status = Status.Canceled;
-  redrawTODOList();
+  refreshTODOList();
 }
 
 function completeItem(e) {
@@ -121,10 +138,5 @@ function completeItem(e) {
   const itemOldStatus = item.status;
 
   item.status = Status.Completed;
-  redrawTODOList();
-}
-
-export function findItemById(id) {
-    const item = items.find(item => item.id == id);
-    return item;
+  refreshTODOList();
 }

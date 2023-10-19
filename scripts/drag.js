@@ -1,8 +1,6 @@
 import { StatusGroupId } from "./classes.js";
 import { itemGroupElements, refreshTODOList, findItemById } from "./main.js";
 
-let draggableElement, dragOffsetY, dragOffsetX;
-
 export function itemDragDown(e) {
   draggableElement = e.target.closest('.draggable');
 
@@ -24,6 +22,8 @@ function itemDragMove(e) {
   draggableElement.style.top = e.clientY - dragOffsetY + 'px';
   draggableElement.style.left = e.clientX - dragOffsetX + 'px';
 }
+
+let draggableElement, dragOffsetY, dragOffsetX;
 
 function itemDragUp(e) {
   draggableElement.style = null;

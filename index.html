@@ -67,15 +67,16 @@
     </div>
     <dialog id="edit_dialog">
       <div class="header">
-        <span>
-          Edit Item
+        <span id="delete_button"
+              class="button">
+          &#9850;
         </span>
-        <span id="discard_button">
-          ✗
+        <span class="content">
+          Edit Item
         </span>
       </div>
       <div class="body">
-        <div class="property_field">
+        <div class="body property_field">
           <span>
             <label for="name">
               Name:
@@ -84,10 +85,10 @@
           <span>
             <input id="name"
                    type="text"
-                   size="20"/>
+                   class="property_element"/>
           </span>
         </div>
-        <div class="property_field">
+        <div class="body property_field">
           <span>
             <label for="description">
               Description:
@@ -96,17 +97,18 @@
           <span>
             <input id="description"
                    type="text"
-                   size="20"/>
+                   class="property_element"/>
           </span>
         </div>
-        <div class="property_field">
+        <div class="body property_field">
           <span>
             <label for="priority">
               Priority:
             </label>
           </span>
           <span>
-            <select id="priority">
+            <select id="priority"
+                    class="property_element">
               <option value="0">
                 Minor
               </option>
@@ -119,14 +121,15 @@
             </select>
           </span>
         </div>
-        <div class="property_field">
+        <div class="body property_field">
           <span>
             <label for="status">
               Status:
             </label>
           </span>
           <span>
-            <select id="status">
+            <select id="status"
+                    class="property_element">
               <option value="0" selected>
                 Planned
               </option>
@@ -142,8 +145,13 @@
             </select>
           </span>
         </div>
-        <div>
-          <span id="save_button">
+        <div class="button_block">
+          <span id="discard_button"
+                class="button">
+            ✗
+          </span>
+          <span id="save_button"
+                class="button">
             ✓
           </span>
         </div>
