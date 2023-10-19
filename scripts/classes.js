@@ -6,12 +6,15 @@ export class ToDoItem {
   createdAt;
   status;
 
-  constructor(name, description) {
+  constructor(name,
+              description,
+              status = Status.Planned,
+              priority = Priority.Normal) {
     this.name = name;
     this.description = description;
     this.createdAt = Date.now();
-    this.status = Status.Planned;
-    this.priority = Priority.Normal;
+    this.status = status;
+    this.priority = priority;
     this.id = self.crypto.randomUUID();
   }
 }

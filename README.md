@@ -6,7 +6,8 @@ Available  languages:
 
 ## English
 ### About project
-The project is a test assignment for a full-stack developer position at InterCode.
+The project is a test assignment for a full-stack developer position at InterCode.  
+It is necessary to implement the specified functionality using pure HTML/CSS and JavaScript.
 
 Must have functionality:
 1. Creating a to-do item;
@@ -29,7 +30,8 @@ Implemented Functionality:
 
 ## Українська  
 ### Про проект  
-Проект є тестовим завданням на посаду повного розробника в InterCode.
+Проект є тестовим завданням на посаду повного розробника в InterCode.  
+Потрібно реалізувати вказаний функціонал за допомогою чистого HTML/CSS та JavaScript.
 
 Повинен мати функціональність:
 1. Створення завдань;

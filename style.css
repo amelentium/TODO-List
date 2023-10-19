@@ -8,6 +8,10 @@ body {
   background-color: #cacaca;
   color: #2B2B2B;
 }
+  
+textarea {
+  resize: none;
+}
 
 .button {
   cursor: pointer;
@@ -97,8 +101,9 @@ body {
   
     .description {
       font-size: smaller;
-      color: rgb(94, 94, 94);   
-      margin: 4px 0px; 
+      color: rgb(94, 94, 94);
+      margin: 4px 0px;
+      padding: 0px 4px;
     }
   }
 
@@ -146,21 +151,32 @@ body {
     opacity: .75;
   }
 
+  & > .body {
+    min-height: 350px;
+    min-width: 250px;
+  }
+
   .body {
-    margin: 0px 16px;
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
+    margin: 0px 16px;
     
     .property_field {
       margin: 0px;
       margin-top: 4px;
       text-align: center;
+
+      > span {
+        display: flex;
+        justify-content: space-evenly;
+      }
     }
 
     .property_element {
       width: 100%;
       text-align: center;
-      padding: 4px 0px;
+      padding: 4px;
     }
 
     .button_block {

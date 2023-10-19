@@ -1,6 +1,7 @@
 import { Status, StatusGroupId } from './classes.js';
 import { openDialog } from './dialog.js';
 import { itemDragStart } from './drag.js';
+import { seed } from './seed.js';
 
 export function refreshTODOList() {
   sortItems();
@@ -35,8 +36,16 @@ Object.keys(StatusGroupId).forEach(status => {
 init();
 
 function init() {
-  loadItems();
-  redrawTODOList();
+  let isalreadySeeded = Boolean(localStorage.getItem('isSeeded'));
+
+  if (!isalreadySeeded) {
+    seed();
+    localStorage.setItem('isSeeded', true);
+    refreshTODOList();
+  } else {
+    loadItems();
+    redrawTODOList();
+  }
 }
 
 function loadItems() {
