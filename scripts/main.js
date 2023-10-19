@@ -123,7 +123,6 @@ function createItemElement(item) {
 function cancelItem(e) {
   const itemElement = e.target.closest('.item');
   const item = findItemById(itemElement.id);
-  const itemOldStatus = item.status;
 
   item.status = Status.Canceled;
   refreshTODOList();
@@ -132,7 +131,6 @@ function cancelItem(e) {
 function completeItem(e) {
   const itemElement = e.target.closest('.item');
   const item = findItemById(itemElement.id);
-  const itemOldStatus = item.status;
 
   item.status = Status.Completed;
   refreshTODOList();
