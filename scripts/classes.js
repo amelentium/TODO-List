@@ -3,19 +3,19 @@ export class ToDoItem {
   name;
   description;
   priority;
-  createdAt;
   status;
+  createdAt;
 
   constructor(name,
               description,
-              status = Status.Planned,
-              priority = Priority.Normal) {
+              priority = Priority.Normal,
+              status = Status.Planned) {
+    this.id = self.crypto.randomUUID();
     this.name = name;
     this.description = description;
-    this.createdAt = Date.now();
-    this.status = status;
     this.priority = priority;
-    this.id = self.crypto.randomUUID();
+    this.status = status;
+    this.createdAt = Date.now();
   }
 }
 
